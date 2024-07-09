@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,3 +24,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/contact', function () {
+    return Response::view('contact');
+});
+
+Route::post('/contact', function (Request $request) {
+    dd($request);
+});
