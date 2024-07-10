@@ -17,18 +17,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//Ruta de welcome
 Route::get('/', function () {
     return view('welcome');
 });
 
+//Ruta de log in y registro
 Auth::routes();
 
+//Ruta de home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+//Rutas de new contact
 Route::get('/contact', function () {
     return Response::view('contact');
 });
 
 Route::post('/contact', function (Request $request) {
     dd($request);
+});
+
+
+//Rutas de change password
+Route::get('/change-password', fn () => Response::view('change-password'));
+
+Route::post('/change-password', function (Request $request){
+    if(auth()->check()){
+        //Cambiamos la contraseña
+        return response("Password changed to {$request->get('password')}");
+    }
+    else{
+        return response("Not Authenticated", 401);
+    }
 });
