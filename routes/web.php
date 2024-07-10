@@ -17,9 +17,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 //Ruta de welcome
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', fn () => auth()->check() ? redirect('/home') : view('welcome'));
+
 
 //Ruta de log in y registro
 Auth::routes();
@@ -27,10 +26,4 @@ Auth::routes();
 //Ruta de home
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-//Ruta de controller
-Route::get('/contacts/create', [ContactController::class, 'create'])->name("contacts.create");
-Route::get('/contacts/{contact}/edit', [ContactController::class, 'edit'])->name("contacts.edit");
-Route::put('/contacts/{contact}', [ContactController::class, 'update'])->name("contacts.update");
-Route::post('/contacts', [ContactController::class, 'store'])->name("contacts.store");
-Route::delete('/contacts/{contact}', [ContactController::class, 'destroy'])->name("contacts.destroy");
-Route::get('/contacts/{contact}', [ContactController::class, 'show'])->name("contacts.show");
+Route::resource('contacts', ContactController::class);
