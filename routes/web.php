@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\ContactController;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -28,26 +31,7 @@ Auth::routes();
 //Ruta de home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//Ruta de controller
+Route::get('/contacts/create', [ContactController::class, 'create'])->name("contacts.create");
+Route::post('/contacts', [ContactController::class, 'store'])->name("contacts.store");
 
-//Rutas de new contact
-Route::get('/contact', function () {
-    return Response::view('contact');
-});
-
-Route::post('/contact', function (Request $request) {
-    dd($request);
-});
-
-
-//Rutas de change password
-Route::get('/change-password', fn () => Response::view('change-password'));
-
-Route::post('/change-password', function (Request $request){
-    if(auth()->check()){
-        //Cambiamos la contraseña
-        return response("Password changed to {$request->get('password')}");
-    }
-    else{
-        return response("Not Authenticated", 401);
-    }
-});
