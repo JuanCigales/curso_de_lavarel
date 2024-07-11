@@ -42,7 +42,12 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        auth()->user()->contacts()->create($request->validated());
+        $contact=auth()->user()->contacts()->create($request->validated());
+
+        session()->flash('alert', [
+            'message' => "Contact $contact->name succesfully saved",
+            'type' => 'success',
+        ]);
 
         return redirect()->route('home');
     }
@@ -68,6 +73,10 @@ class ContactController extends Controller
     public function edit(Contact $contact)
     {
         $this->authorize('update', $contact);
+        session()->flash('alert', [
+            'message' => "Contact $contact->name succesfully edit",
+            'type' => 'success',
+        ]);
         return view('contacts.edit', compact('contact'));
     }
 
@@ -82,6 +91,10 @@ class ContactController extends Controller
     {
         $this->authorize('update', $contact);
         $contact->update($request->validated());
+        session()->flash('alert', [
+            'message' => "Contact $contact->name succesfully update",
+            'type' => 'success',
+        ]);
         return redirect()->route('home');
     }
 
@@ -96,6 +109,11 @@ class ContactController extends Controller
         $this->authorize('delete', $contact);
 
         $contact->delete();
+
+        session()->flash('alert', [
+            'message' => "Contact $contact->name succesfully delete",
+            'type' => 'success',
+        ]);
 
         return redirect()->route('home');
     }
