@@ -73,10 +73,6 @@ class ContactController extends Controller
     public function edit(Contact $contact)
     {
         $this->authorize('update', $contact);
-        session()->flash('alert', [
-            'message' => "Contact $contact->name succesfully edit",
-            'type' => 'success',
-        ]);
         return view('contacts.edit', compact('contact'));
     }
 
@@ -115,6 +111,6 @@ class ContactController extends Controller
             'type' => 'success',
         ]);
 
-        return redirect()->route('home');
+        return back();
     }
 }
