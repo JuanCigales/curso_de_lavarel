@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Gate;
 
 class ContactController extends Controller
 {
@@ -55,7 +58,8 @@ class ContactController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Contact $contact)
-    {
+    {   
+        $this->authorize('view', $contact);
         return view('contacts.show', compact('contact'));
     }
 
@@ -67,6 +71,7 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
+        $this->authorize('update', $contact);
         return view('contacts.edit', compact('contact'));
     }
 
@@ -79,6 +84,7 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
+        $this->authorize('update', $contact);
         $data = $request->validate([
             'name' => 'required',
             'email' => ['required', 'email'],
@@ -98,6 +104,8 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
+        $this->authorize('delete', $contact);
+
         $contact->delete();
 
         return redirect()->route('home');
