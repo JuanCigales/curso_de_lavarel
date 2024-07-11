@@ -8,7 +8,8 @@
                     <div class="card-header">Create New Contact</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('contacts.store') }}">
+                        <form method="POST" action="{{ route('contacts.store') }}"
+                            enctype="multipart/form-data">
                             @csrf
                             <div class="row mb-3">
                                 <label for="name" class="col-md-4 col-form-label text-md-end">Name</label>
@@ -24,14 +25,14 @@
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">Phone Number</label>
+                                <label for="phone_number" class="col-md-4 col-form-label text-md-end">Phone Number</label>
 
                                 <div class="col-md-6">
                                     <input id="phone_number" type="tel"
-                                        class="@error('phone_number') is-invalid @enderror form-control" name="phone_number" value="{{ old('phone_number') }}"
-                                        autocomplete="phone_number">
+                                        class="@error('phone_number') is-invalid @enderror form-control" name="phone_number"
+                                        value="{{ old('phone_number') }}" autocomplete="phone_number">
                                     @error('phone_number')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -45,8 +46,8 @@
 
                                 <div class="col-md-6">
                                     <input id="email" type="text"
-                                        class="@error('email') is-invalid @enderror form-control" name="email" value="{{ old('email') }}"
-                                        autocomplete="email">
+                                        class="@error('email') is-invalid @enderror form-control" name="email"
+                                        value="{{ old('email') }}" autocomplete="email">
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -56,13 +57,30 @@
                             </div>
 
                             <div class="row mb-3">
-                                <label for="email" class="col-md-4 col-form-label text-md-end">Age</label>
+                                <label for="age" class="col-md-4 col-form-label text-md-end">Age</label>
 
                                 <div class="col-md-6">
                                     <input id="age" type="text"
-                                        class="@error('age') is-invalid @enderror form-control" name="age" value="{{ old('age') }}"
-                                        autocomplete="age">
+                                        class="@error('age') is-invalid @enderror form-control" name="age"
+                                        value="{{ old('age') }}" autocomplete="age">
                                     @error('age')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label for="profile_picture" class="col-md-4 col-form-label text-md-end">Profile
+                                    Picture</label>
+
+                                <div class="col-md-6">
+                                    <input id="profile_picture" type="file"
+                                        class="@error('profile_picture') is-invalid @enderror form-control"
+                                        name="profile_picture">
+
+                                    @error('profile_picture')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>

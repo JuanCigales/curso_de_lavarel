@@ -42,7 +42,12 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        $contact=auth()->user()->contacts()->create($request->validated());
+        $data = $request->validated();
+        if ($request->hasFile('profile_picture')){
+            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $data['profile_picture'] = $path;
+        }
+        $contact=auth()->user()->contacts()->create($data);
 
         session()->flash('alert', [
             'message' => "Contact $contact->name succesfully saved",
@@ -86,11 +91,20 @@ class ContactController extends Controller
     public function update(StoreContactRequest $request, Contact $contact)
     {
         $this->authorize('update', $contact);
-        $contact->update($request->validated());
+
+        $data = $request->validated();
+        if ($request->hasFile('profile_picture')){
+            $path = $request->file('profile_picture')->store('profiles', 'public');
+            $data['profile_picture'] = $path;
+        }
+
+        $contact->update($data);
+
         session()->flash('alert', [
             'message' => "Contact $contact->name succesfully update",
             'type' => 'success',
         ]);
+        
         return redirect()->route('home');
     }
 
