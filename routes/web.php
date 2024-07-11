@@ -33,8 +33,8 @@ Route::get('/billing-portal', [StripeController::class, 'billingPortal'])->name(
 Route::get('/free-trial-end', [StripeController::class, 'freeTrialEnd'])->name('free-trial-end');
 
 
-//Ruta de home
-Route::middleware(['auth', 'subscription'])->group(function(){
+//Routes covers by middleware
+Route::middleware(['auth', 'subscription'])->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
-    Route::middleware('auth', 'subscription')->resource('contacts', ContactController::class);
+    Route::resource('contacts', ContactController::class);
 });
