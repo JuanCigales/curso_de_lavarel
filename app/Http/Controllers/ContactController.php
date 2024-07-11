@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreContactRequest;
 use App\Models\Contact;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class ContactController extends Controller
 {
@@ -37,16 +40,9 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreContactRequest $request)
     {
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => ['required', 'email'],
-            'phone_number' => ['required', 'digits:9'],
-            'age' => ['required', 'numeric', 'min:1', 'max:255'],
-        ]);
-
-        auth()->user()->contacts()->create($data);
+        auth()->user()->contacts()->create($request->validated());
 
         return redirect()->route('home');
     }
@@ -82,17 +78,10 @@ class ContactController extends Controller
      * @param  \App\Models\Contact  $contact
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contact $contact)
+    public function update(StoreContactRequest $request, Contact $contact)
     {
         $this->authorize('update', $contact);
-        $data = $request->validate([
-            'name' => 'required',
-            'email' => ['required', 'email'],
-            'phone_number' => ['required', 'digits:9'],
-            'age' => ['required', 'numeric', 'min:1', 'max:255'],
-        ]);
-
-        $contact->update($data);
+        $contact->update($request->validated());
         return redirect()->route('home');
     }
 
