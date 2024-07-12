@@ -24,4 +24,5 @@ class Contact extends Model
     public function sharedWithUsers(){
         return $this->belongsToMany(User::class, 'contact_shares');
     }
+    
 }
