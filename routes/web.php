@@ -4,6 +4,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ContactShareController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StripeController;
+use App\Http\Controllers\TokenController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Cashier\Billable;
@@ -40,4 +41,5 @@ Route::middleware(['auth', 'subscription'])->group(function () {
     Route::resource('contacts', ContactController::class);
     Route::resource('contact-shares', ContactShareController::class)
         ->except(['show', 'edit', 'update']);
+    Route::resource('tokens', TokenController::class)->only(['create', 'store']);
 });
