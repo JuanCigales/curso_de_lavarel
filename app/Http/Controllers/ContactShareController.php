@@ -40,26 +40,28 @@ class ContactShareController extends Controller
             'contact_email' => Rule::exists('contacts', 'email')
                 ->where('user_id', auth()->id()),
         ], [
-            'user_email.not_in' => "You cant share a contact with yourself",
-            'contact_email.exists' => "This contact was not found in your contact lists",
+            'user_email.not_in' => "You can't share a contact with yourself",
+            'contact_email.exists' => 'This contact was not found in your contact list'
         ]);
 
-        $user = User::where('email', $data['user_email'])->first(['id']);
-        $contact = Contact::where('email', $data['contact_email'])->first(['id']);
+        $user = User::where('email', $data['user_email'])->first(['id', 'email']);
+        $contact = Contact::where('email', $data['contact_email'])->first(['id', 'email']);
 
         $shareExists = $contact->sharedWithUsers()->wherePivot('user_id', $user->id)->first();
+
         if ($shareExists) {
             return back()->withInput($request->all())->withErrors([
                 'contact_email' => "This contact was already shared with user $user->email",
             ]);
         }
+
         $contact->sharedWithUsers()->attach($user->id);
 
         Mail::to($user)->send(new ContactShared(auth()->user()->email, $contact->email));
 
         return redirect()->route('home')->with('alert', [
-            'message' => "Contact $contact->email shared with $user->email succesfully",
-            'type' => 'succes',
+            'message' => "Contact $contact->email shared with $user->email successfully",
+            'type' => 'success'
         ]);
     }
 
