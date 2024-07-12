@@ -59,6 +59,9 @@
                             @endif
                         @else
                             <li class="nav-item">
+                                <a class="nav-link" href="{{ route('contact-shares.create') }}">Share Contacts</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="{{ route('contacts.index') }}">My Contacts</a>
                             </li>
                             <li class="nav-item">
