@@ -8,6 +8,7 @@ use GuzzleHttp\Psr7\Response;
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
@@ -52,6 +53,8 @@ class ContactController extends Controller
             $data['profile_picture'] = $path;
         }
         $contact=auth()->user()->contacts()->create($data);
+        
+        Cache::forget(auth()->id());
 
         session()->flash('alert', [
             'message' => "Contact $contact->name succesfully saved",
